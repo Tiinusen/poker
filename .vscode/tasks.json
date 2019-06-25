@@ -1,0 +1,96 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Test",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/test/integration"
+			},
+			"command": "go",
+			"args": [
+				"test",
+				"-count",
+				"1",
+				"-tags",
+				"integration",
+				"./..."
+			],
+			"problemMatcher": ["$go"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build (Client)",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"command": "GOOS=linux go build -o ./cmd/poker/poker ./cmd/poker/*.go",
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"dependsOn":[
+				"Generate"
+			]
+		},
+		{
+			"label": "Build (Service)",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"command": "GOOS=linux go build -o ./cmd/poker_service/poker_service ./cmd/poker_service/*.go",
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"dependsOn":[
+				"Generate"
+			]
+		},
+		{
+			"label": "Generate",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"command": "go generate ./...",
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run (Playground)",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"command": "go run cmd/playground/main.go",
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+		},
+	]
+}

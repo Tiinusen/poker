@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package poker;
+option go_package = "github.com/Tiinusen/poker/pkg/proto/poker";
+
+service PokerService {
+    rpc Connect(stream poker.Input) returns (stream poker.Event){}
+}
+
+message Input {
+
+}
+
+message Event {
+    
+}
