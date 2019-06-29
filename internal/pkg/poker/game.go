@@ -22,6 +22,13 @@ type Game struct {
 	MandatoryStructure []MandatoryStructure
 }
 
+// Run
+func (g *Game) Run(context) {
+	for {
+
+	}
+}
+
 // Rules implements the funcs used by Game to determine outcome
 type Rules interface {
 	// Stage perfoms the provided stage, adjusts accordingly and then returns the changed table state and the next stage
