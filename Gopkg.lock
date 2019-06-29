@@ -10,6 +10,14 @@
   revision = "9958079a57258a2fd23bbd1ee6fecfa42a909dba"
 
 [[projects]]
+  digest = "1:fb6b4ea21671a4a8037cccc0a582caada51b4ac550219f42b9e8ce4671bc568b"
+  name = "github.com/go-test/deep"
+  packages = ["."]
+  pruneopts = ""
+  revision = "6592d9cc0a499ad2d5f574fde80a2b5c5cc3b4f5"
+  version = "v1.0.1"
+
+[[projects]]
   digest = "1:529d738b7976c3848cae5cf3a8036440166835e389c1f617af701eeb12a0518d"
   name = "github.com/golang/protobuf"
   packages = [
@@ -43,14 +51,6 @@
   pruneopts = ""
   revision = "cd0c8ef3533e9c04e6520cac37a81fe262fb0b34"
   version = "v1.9.2"
-
-[[projects]]
-  digest = "1:0536e7642a38c1683743ce8f1f6d83d9b3fc591a6cd911762f539283faec4132"
-  name = "github.com/kelseyhightower/envconfig"
-  packages = ["."]
-  pruneopts = ""
-  revision = "0b417c4ec4a8a82eecc22a1459a504aa55163d61"
-  version = "v1.4.0"
 
 [[projects]]
   digest = "1:1d7e1867c49a6dd9856598ef7c3123604ea3daabf5b83f303ff457bcbc410b1d"
@@ -169,10 +169,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/Tiinusen/go/cmd/glob",
+    "github.com/go-test/deep",
     "github.com/golang/protobuf/proto",
     "github.com/golang/protobuf/protoc-gen-go",
     "github.com/grpc-ecosystem/grpc-gateway/runtime",
-    "github.com/kelseyhightower/envconfig",
     "github.com/pkg/errors",
     "google.golang.org/grpc",
     "google.golang.org/grpc/codes",
