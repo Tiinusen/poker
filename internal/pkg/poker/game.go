@@ -1,9 +1,35 @@
 package poker
 
 import (
+	"context"
 	"fmt"
 	"time"
 )
+
+// NewCashGame creates a new cash game with provided settings
+func NewCashGame(Rules Rules, Limit Limit, mandatoryStructure MandatoryStructure) *Game {
+	return &Game{
+		Type:  Cash,
+		Rules: Rules,
+		Limit: Limit,
+		MandatoryStructure: []MandatoryStructure{
+			mandatoryStructure,
+		},
+	}
+}
+
+// NewTournament creates a new tournament with provided settings
+func NewTournament(Rules Rules, Limit Limit, MandatoryStructure []MandatoryStructure, LevelInterval time.Duration, BreakInterval time.Duration, StartTime time.Time) *Game {
+	return &Game{
+		Type:               Tournament,
+		Rules:              Rules,
+		Limit:              Limit,
+		MandatoryStructure: MandatoryStructure,
+		LevelInterval:      LevelInterval,
+		BreakInterval:      BreakInterval,
+		StartTime:          StartTime,
+	}
+}
 
 // Game represents a poker game (also tournaments)
 type Game struct {
@@ -11,21 +37,28 @@ type Game struct {
 	Rules Rules
 	Limit Limit
 
-	// Break Related
+	Tables             []Table
+	Players            []Player
+	MandatoryStructure []MandatoryStructure
+
+	// Break related
 	NextBreak     time.Time
 	BreakInterval time.Duration
 
-	// Mandatory Structure Related
-	NextLevel          time.Time
-	CurrentLevel       uint
-	LevelInterval      time.Duration
-	MandatoryStructure []MandatoryStructure
+	// Tournament related
+	StartTime     time.Time
+	CurrentLevel  uint
+	NextLevel     time.Time
+	LevelInterval time.Duration
 }
 
-// Run
-func (g *Game) Run(context) {
-	for {
+// Run should run the game until it ends or until context expires (since cash games never expires)
+// if context expires during a tournament then you are F***ed and can probably say goodbye to your player base
+func (g *Game) Run(ctx context.Context) {
+	switch g.Type {
+	case Cash:
 
+	case Tournament:
 	}
 }
 
