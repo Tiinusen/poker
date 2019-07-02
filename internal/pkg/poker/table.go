@@ -9,10 +9,14 @@ import (
 // NewTable creates a table with provided capacity
 func NewTable(capacity int) Table {
 	uuid, _ := uuid.NewUUID()
-	return Table{
+	table := Table{
 		TableID: TableID(uuid.String()),
 		Slots:   make([]Slot, capacity),
 	}
+	for i := range table.Slots {
+		table.Slots[i] = NewSlot()
+	}
+	return table
 }
 
 // Table represents a poker table
@@ -27,8 +31,17 @@ type Table struct {
 // TableID represents an TableID
 type TableID string
 
+// NewSlot creates a slot
+func NewSlot() Slot {
+	uuid, _ := uuid.NewUUID()
+	return Slot{
+		SlotID: SlotID(uuid.String()),
+	}
+}
+
 // Slot represents a table slot
 type Slot struct {
+	SlotID          SlotID
 	Player          Player
 	Chips           float64
 	Cards           []Card
@@ -36,6 +49,9 @@ type Slot struct {
 	SittingOutSince time.Time
 	BuyingInSince   time.Time
 }
+
+// SlotID represents an SlotID
+type SlotID string
 
 // PlayerStatus represents the players current table status
 type PlayerStatus int

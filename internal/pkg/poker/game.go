@@ -103,6 +103,7 @@ func (g *Game) Join(ctx context.Context, tableID TableID, slot int, player Playe
 			if g.Tables[i].Slots[slot].Status != Empty {
 				return ErrTableSlotAlreadyTaken
 			}
+
 			g.Tables[i].Slots[slot].Player = player
 			g.Tables[i].Slots[slot].Chips = 0
 			g.Tables[i].Slots[slot].Status = BuyIn
