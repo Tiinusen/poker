@@ -41,6 +41,14 @@
   version = "v1.3.1"
 
 [[projects]]
+  digest = "1:ad92aa49f34cbc3546063c7eb2cabb55ee2278b72842eda80e2a20a8a06a8d73"
+  name = "github.com/google/uuid"
+  packages = ["."]
+  pruneopts = ""
+  revision = "0cd6bf5da1e1c83f8b45653022c74f71af0538a4"
+  version = "v1.1.1"
+
+[[projects]]
   digest = "1:286e87ff94e953edb261c012556764d5360fd7d892eeff43f44ccdbe1d0d2c0e"
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = [
@@ -172,6 +180,7 @@
     "github.com/go-test/deep",
     "github.com/golang/protobuf/proto",
     "github.com/golang/protobuf/protoc-gen-go",
+    "github.com/google/uuid",
     "github.com/grpc-ecosystem/grpc-gateway/runtime",
     "github.com/pkg/errors",
     "google.golang.org/grpc",

@@ -2,7 +2,9 @@ package poker
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -50,17 +52,75 @@ type Game struct {
 	CurrentLevel  uint
 	NextLevel     time.Time
 	LevelInterval time.Duration
+
+	// Internal
+	mutex sync.RWMutex
 }
 
 // Run should run the game until it ends or until context expires (since cash games never expires)
-// if context expires during a tournament then you are F***ed and can probably say goodbye to your player base
 func (g *Game) Run(ctx context.Context) {
+	// Don't forget to perform a gracevul pause of an ongoing tournament if context expires
 	switch g.Type {
 	case Cash:
 
 	case Tournament:
+
 	}
 }
+
+// Register adds player to tournament roster
+// will throw ErrNotAnTournament if not an tournament
+func (g *Game) Register(Player Player) error {
+	if g.Type != Tournament {
+		return ErrNotAnTournament
+	}
+	g.mutex.Lock()
+	g.Players = append(g.Players, Player)
+	g.mutex.Unlock()
+	return nil
+}
+
+// ErrNotAnTournament is returned when trying to register to an non tournament game
+var ErrNotAnTournament = errors.New("this is not a tournament")
+
+// Join adds player to a table on designated slot
+func (g *Game) Join(ctx context.Context, tableID TableID, slot int, player Player) error {
+	g.mutex.Lock()
+	defer g.mutex.Unlock()
+	for i := range g.Tables {
+		if g.Tables[i].TableID == tableID {
+			if slot < 0 || slot >= len(g.Tables[i].Slots) {
+				return ErrTableNotFound
+			}
+
+			// Checks if Player already exists on table
+			for _, p := range g.Tables[i].Slots {
+				if p.Player.AccountID == player.AccountID {
+					return ErrPlayerAlreadyOnTable
+				}
+			}
+
+			if g.Tables[i].Slots[slot].Status != Empty {
+				return ErrTableSlotAlreadyTaken
+			}
+			g.Tables[i].Slots[slot].Player = player
+			g.Tables[i].Slots[slot].Chips = 0
+			g.Tables[i].Slots[slot].Status = BuyIn
+			g.Tables[i].Slots[slot].BuyingInSince = time.Now()
+			return nil
+		}
+	}
+	return ErrTableNotFound
+}
+
+// ErrPlayerAlreadyOnTable is returned when a player already plays on the same table
+var ErrPlayerAlreadyOnTable = errors.New("player already added to table")
+
+// ErrTableSlotAlreadyTaken is returned when a join attempt is made on an non empty table slot
+var ErrTableSlotAlreadyTaken = errors.New("table slot is already taken")
+
+// ErrTableNotFound is returned when no table was found
+var ErrTableNotFound = errors.New("table was not found")
 
 // Rules implements the funcs used by Game to determine outcome
 type Rules interface {

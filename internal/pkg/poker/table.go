@@ -1,28 +1,40 @@
 package poker
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 // NewTable creates a table with provided capacity
 func NewTable(capacity int) Table {
+	uuid, _ := uuid.NewUUID()
 	return Table{
-		Slots: make([]Slot, capacity),
+		TableID: TableID(uuid.String()),
+		Slots:   make([]Slot, capacity),
 	}
 }
 
 // Table represents a poker table
 type Table struct {
+	TableID        TableID
 	Slots          []Slot
 	Deck           Deck
 	CommunityCards []Card
 	DiscardedCards []Card
 }
 
+// TableID represents an TableID
+type TableID string
+
 // Slot represents a table slot
 type Slot struct {
 	Player          Player
+	Chips           float64
 	Cards           []Card
 	Status          PlayerStatus
 	SittingOutSince time.Time
+	BuyingInSince   time.Time
 }
 
 // PlayerStatus represents the players current table status
